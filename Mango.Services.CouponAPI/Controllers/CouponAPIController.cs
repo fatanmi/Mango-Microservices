@@ -11,11 +11,11 @@ namespace Mango.Services.CouponAPI.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class CouponAPIController : Controller
+    public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
-        private ResponseDto _response;
-        private IMapper _mapper;
+        private readonly ResponseDto _response;
+        private readonly IMapper _mapper;
         public CouponAPIController(AppDbContext db, IMapper mapper)
         {
             _db = db;
@@ -39,7 +39,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("{id:int}", Name = "GetCoupon")]
         public ResponseDto Get(int id)
         {
             try
@@ -81,17 +81,18 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpPost]
-        public ResponseDto Post([FromBody] CouponDto couponDto)
+        public ResponseDto Post([FromBody] CreateCouponDto couponDto)
         {
+
             try
             {
                 Coupon obj = _mapper.Map<Coupon>(couponDto);
-
                 _db.Coupons.Add(obj);
                 _db.SaveChanges();
 
                 _response.Result = _mapper.Map<CouponDto>(obj);
 
+                return _response;
             }
             catch (Exception ex)
             {
@@ -102,15 +103,13 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpPut]
-        public ResponseDto Put([FromBody] CouponDto couponDto)
+        public ResponseDto Put([FromBody] CreateCouponDto couponDto)
         {
             try
             {
                 Coupon obj = _mapper.Map<Coupon>(couponDto);
-
                 _db.Coupons.Update(obj);
                 _db.SaveChanges();
-
                 _response.Result = _mapper.Map<CouponDto>(obj);
 
             }
@@ -127,6 +126,7 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
+                if (id < 0) _response.IsSuccess = false;
                 Coupon obj = _db.Coupons.FirstOrDefault(u => u.CouponID == id);
 
                 _db.Coupons.Remove(obj);

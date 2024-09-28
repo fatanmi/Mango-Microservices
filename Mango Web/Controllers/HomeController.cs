@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Mango_Web.Models;
+using Mango.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango_Web.Controllers
