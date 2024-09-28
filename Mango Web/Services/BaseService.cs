@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Mango.Web.Models;
 using Mango.Web.Services.IService;
-using static Mango_Web.Utilities.SD;
+using static Mango.Web.Utilities.SD;
 
 namespace Mango.Web.Services
 {
@@ -30,27 +30,16 @@ namespace Mango.Web.Services
                 if (requestDto.Data != null)
                 {
                     message.Content = new StringContent(JsonSerializer.Serialize(requestDto.Data));
-
                 }
 
                 HttpResponseMessage? apiResponse = null;
-                switch (requestDto.ApiType)
+                message.Method = requestDto.ApiType switch
                 {
-                    case ApiType.POST:
-                        message.Method = HttpMethod.Post;
-                        break;
-                    case ApiType.PUT:
-                        message.Method = HttpMethod.Put;
-                        break;
-
-                    case ApiType.DELETE:
-                        message.Method = HttpMethod.Delete;
-                        break;
-                    default:
-                        message.Method = HttpMethod.Get;
-                        break;
-
-                }
+                    ApiType.POST => HttpMethod.Post,
+                    ApiType.PUT => HttpMethod.Put,
+                    ApiType.DELETE => HttpMethod.Delete,
+                    _ => HttpMethod.Get,
+                };
                 apiResponse = await client.SendAsync(message);
 
                 switch (apiResponse.StatusCode)
@@ -76,7 +65,7 @@ namespace Mango.Web.Services
                 var dto = new ResponseDto
                 {
                     IsSuccess = false,
-                    Message = ex.Message,
+                    Message = ex.Message.ToString(),
                 };
                 return dto;
             }

@@ -39,7 +39,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("{id:int}", Name = "GetCoupon")]
+        [Route("{id:int}", Name = "GetByID")]
         public ResponseDto Get(int id)
         {
             try
@@ -58,7 +58,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("GetByCode/{code}")]
+        [Route("GetByCode/{code}", Name = "GetByCode")]
         public ResponseDto Get(string code)
         {
             try

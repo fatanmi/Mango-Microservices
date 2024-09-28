@@ -9,7 +9,7 @@
         }
     },
     "profiles": {
-        "Mango.Services.CouponAPI": {
+        "http": {
             "commandName": "Project",
             "dotnetRunMessages": true,
             "launchBrowser": true,

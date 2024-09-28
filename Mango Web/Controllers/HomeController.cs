@@ -2,7 +2,7 @@
 using Mango.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mango_Web.Controllers
+namespace Mango.Web.Controllers
 {
     public class HomeController : Controller
     {
