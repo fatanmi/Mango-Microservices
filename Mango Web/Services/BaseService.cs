@@ -1,8 +1,9 @@
 ﻿using System.Net;
+using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Mango.Web.Models;
 using Mango.Web.Services.IService;
+using Newtonsoft.Json;
 using static Mango.Web.Utilities.SD;
 
 namespace Mango.Web.Services
@@ -23,13 +24,12 @@ namespace Mango.Web.Services
             {
                 HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
                 HttpRequestMessage message = new();
-                message.Headers.Add("Content-Type", "application/json");
                 //token
 
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data != null)
                 {
-                    message.Content = new StringContent(JsonSerializer.Serialize(requestDto.Data));
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
                 }
 
                 HttpResponseMessage? apiResponse = null;
@@ -55,7 +55,8 @@ namespace Mango.Web.Services
 
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDto = JsonSerializer.Deserialize<ResponseDto>(apiContent);
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+                        
                         return apiResponseDto;
 
                 }
