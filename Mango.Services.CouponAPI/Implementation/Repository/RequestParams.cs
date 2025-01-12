@@ -1,4 +1,4 @@
-﻿namespace BaseLibrary.Implementation.Repository
+﻿namespace Mango.Services.CouponAPI.Implementation.Repository
 {
     public class RequestParams
     {

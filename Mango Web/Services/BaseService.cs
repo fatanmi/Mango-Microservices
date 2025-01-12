@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text;
-using System.Text.Json;
 using Mango.Web.Models;
 using Mango.Web.Services.IService;
 using Newtonsoft.Json;
@@ -32,7 +31,7 @@ namespace Mango.Web.Services
                     message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
                 }
 
-                HttpResponseMessage? apiResponse = null;
+                HttpResponseMessage apiResponse = null;
                 message.Method = requestDto.ApiType switch
                 {
                     ApiType.POST => HttpMethod.Post,
@@ -56,7 +55,7 @@ namespace Mango.Web.Services
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-                        
+
                         return apiResponseDto;
 
                 }

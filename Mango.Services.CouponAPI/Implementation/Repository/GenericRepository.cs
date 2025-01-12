@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using X.PagedList;
-using BaseLibrary.Implementation.Contract;
+using Mango.Services.CouponAPI.Implementation.Contract;
+using System.ComponentModel.DataAnnotations;
 
-namespace BaseLibrary.Implementation.Repository
+namespace Mango.Services.CouponAPI.Implementation.Repository
 {
     public class GenericRepository<T, TContext> : IGenericRepository<T, TContext> where T : class where TContext : DbContext
     {
@@ -86,12 +87,19 @@ namespace BaseLibrary.Implementation.Repository
         }
         public async Task DeleteAsync(int Id)
         {
-            T Entity = await _Db.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == Id);
-            if (Entity != null)
+            // Infer the primary key property dynamically
+
+
+
+            // Query using the dynamically determined key property name
+            T entity = await _Db.FirstOrDefaultAsync(e => EF.Property<int>(e, "CouponID") == Id);
+
+            if (entity != null)
             {
-                _Db.Remove(Entity);
+                _Db.Remove(entity);
                 await _DbContext.SaveChangesAsync();
             }
         }
+
     }
 }

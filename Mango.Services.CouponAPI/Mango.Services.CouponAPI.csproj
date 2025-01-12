@@ -21,11 +21,6 @@
 		<PackageReference Include="X.PagedList" Version="10.5.7" />
 	</ItemGroup>
 
-	<ItemGroup>
-
-		<ProjectReference Include="..\BaseLibrary\BaseLibrary.csproj" />
-	</ItemGroup>
-
 </Project>
 
 

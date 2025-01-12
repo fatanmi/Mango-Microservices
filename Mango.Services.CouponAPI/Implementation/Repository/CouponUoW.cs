@@ -1,8 +1,8 @@
 ﻿using Mango.Services.CouponAPI.Data;
 using Mango.Services.CouponAPI.Implementation.Contract;
 using Mango.Services.CouponAPI.Models;
-using BaseLibrary.Implementation.Contract;
-using BaseLibrary.Implementation.Repository;
+using Mango.Services.CouponAPI.Implementation.Contract;
+using Mango.Services.CouponAPI.Implementation.Repository;
 
 namespace Mango.Services.CouponAPI.Implementation.Repository
 {

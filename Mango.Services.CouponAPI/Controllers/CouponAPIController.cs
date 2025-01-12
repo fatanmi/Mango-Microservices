@@ -121,18 +121,19 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<ResponseDto> Delete(int id)
+        [Route("{Id:int}")]
+        public async Task<ResponseDto> Delete(int Id)
         {
             try
             {
-                if (id < 0) _response.IsSuccess = false;
-                Coupon CouponItem = await _CouponService.Coupons.GetAsync(q => q.CouponID == id);
+                if (Id < 0) _response.IsSuccess = false;
+                Coupon CouponItem = await _CouponService.Coupons.GetAsync(q => q.CouponID == Id);
 
                 if (CouponItem != null && _response.IsSuccess)
                 {
-                    await _CouponService.Coupons.DeleteAsync(id);
+                    await _CouponService.Coupons.DeleteAsync(Id);
                     _response.IsSuccess = true;
-                    _response.Message = "Comment Deleted!";
+                    _response.Message = "Deleted!";
                     return _response;
                 }
 
