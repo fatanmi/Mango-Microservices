@@ -1,0 +1,89 @@
+﻿@model Mango.Web.Models.CreateUserDto
+
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="fw-bold mb-0">Register</h2>
+                </div>
+                <div class="card-body bg-light">
+                    <form asp-action="Register">
+                        <!-- Validation Summary -->
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label fw-bold text-dark">Last Name</label>
+                            <input asp-for="LastName" class="form-control rounded-pill" placeholder="Enter your last name" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label fw-bold text-dark">First Name</label>
+                            <input asp-for="FirstName" class="form-control rounded-pill" placeholder="Enter your first name" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label fw-bold text-dark">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control rounded-pill" placeholder="Enter your phone number" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-bold text-dark">Email Address</label>
+                            <input asp-for="Email" class="form-control rounded-pill" placeholder="Enter your email address" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
+                            <input asp-for="Password" type="password" class="form-control rounded-pill" placeholder="Create a secure password" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <!-- Role -->
+                        <div class="mb-3">
+                            <label asp-for="Roles" class="form-label fw-bold text-dark">Role</label>
+                            <select asp-for="Roles" class="form-select rounded-pill shadow-sm" asp-items="@ViewBag.RoleList">
+                                <option disabled selected>-- Select Role --</option>
+                            </select>
+                            <span asp-validation-for="Roles" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="bi bi-person-plus"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">
+                        Already have an account?
+                        <a asp-controller="Auth" asp-action="Login" class="text-primary fw-bold">Login here</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

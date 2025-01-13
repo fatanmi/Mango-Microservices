@@ -1,6 +1,6 @@
 ﻿using Mango.Web.Models;
 
-namespace Mango.Web.Services.IService
+namespace Mango.Web.Implementation.IService
 {
     public interface IBaseService
     {

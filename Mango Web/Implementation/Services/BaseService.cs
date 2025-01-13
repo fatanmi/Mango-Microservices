@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Text;
+using Mango.Web.Implementation.IService;
 using Mango.Web.Models;
-using Mango.Web.Services.IService;
 using Newtonsoft.Json;
 using static Mango.Web.Utilities.SD;
 
-namespace Mango.Web.Services
+namespace Mango.Web.Implementation.Services
 {
     public class BaseService : IBaseService
 

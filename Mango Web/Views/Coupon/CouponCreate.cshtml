@@ -1,50 +1,47 @@
 ﻿@using Mango.Web.Models
 
 @model CreateCouponDto
-<form asp-action="CouponCreate">
-    <br />
-    <div class="container border p-3">
-        <h1 class="text-white text-center">Create Coupon</h1>
-
-        <hr />
-        <div class="row">
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Coupon Code</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="CouponCode" class="form-control" />
-                <span asp-validation-for="CouponCode" class="text-danger" />
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Discount Amount</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="DiscountAmount" class="form-control" />
-                <span asp-validation-for="DiscountAmount" class="text-danger" />
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Min Amount</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input asp-for="MinAmount" class="form-control" />
-                <span asp-validation-for="MinAmount" class="text-danger" />
-            </div>
-
-            <div class="col-5 offset-2">
-
-                <a asp-action="CouponIndex" class="btn-primary btn form-control ">Back to List</a>
-            </div>
-            <div class="col-5">
-                <input type="submit" value="Create" class="btn btn-success form-control" />
-
-            </div>
-
+<form asp-action="CouponCreate" class="p-5 rounded shadow-lg bg-gradient" style="background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff;">
+    <h2 class="text-center fw-bold mb-4" style="letter-spacing: 2px;">🎉 Create Your Coupon 🎉</h2>
+    <div class="row g-4">
+        <!-- Coupon Code -->
+        <div class="col-12">
+            <label asp-for="CouponCode" class="form-label fw-semibold">Coupon Code</label>
+            <input asp-for="CouponCode" class="form-control border-0" placeholder="Enter a unique code" style="background-color: #f0f8ff;" />
+            <span asp-validation-for="CouponCode" class="text-warning small"></span>
         </div>
 
-        <div>
+        <!-- Discount Amount -->
+        <div class="col-12">
+            <label asp-for="DiscountAmount" class="form-label fw-semibold">Discount Amount</label>
+            <input asp-for="DiscountAmount" class="form-control border-0" placeholder="Enter the discount value" style="background-color: #f0f8ff;" />
+            <span asp-validation-for="DiscountAmount" class="text-warning small"></span>
+        </div>
+
+        <!-- Minimum Amount -->
+        <div class="col-12">
+            <label asp-for="MinAmount" class="form-label fw-semibold">Minimum Purchase Amount</label>
+            <input asp-for="MinAmount" class="form-control border-0" placeholder="Set the minimum purchase" style="background-color: #f0f8ff;" />
+            <span asp-validation-for="MinAmount" class="text-warning small"></span>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <a asp-action="CouponIndex" class="btn btn-outline-light w-100 py-2" style="border-radius: 50px;">
+                <i class="bi bi-arrow-left-circle-fill"></i> Back to List
+            </a>
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-light text-primary w-100 py-2 fw-bold" style="border-radius: 50px;">
+                <i class="bi bi-check-circle-fill"></i> Create Coupon
+            </button>
         </div>
     </div>
 </form>
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
