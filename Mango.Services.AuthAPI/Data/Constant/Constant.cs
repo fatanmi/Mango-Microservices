@@ -8,6 +8,5 @@
              {"AdminRole", ("Admin", "ADMINISTRATOR" ) },
 
         };
-
     }
 }

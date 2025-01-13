@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Mango.Services.AuthAPI [Default Configuration]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\Mango.Services.AuthAPI\\Mango.Services.AuthAPI.csproj"
+        }
+    ]
+}
