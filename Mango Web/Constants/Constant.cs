@@ -7,6 +7,7 @@ namespace Mango.Web.Constants
         {
              {"UserRole", ("User", "USER" ) },
              {"AdminRole", ("Admin", "ADMINISTRATOR" ) },
+             {"CustomerRole", ("Customer", "CUSTOMER" ) },
 
         };
 
