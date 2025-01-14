@@ -1,11 +1,34 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
-            "name": "C#: Mango.Services.AuthAPI [Default Configuration]",
+            "name": "C#: Mango Web",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\Mango Web\\Mango.Web.csproj"
+        },
+        {
+            "name": "C#: Mango.Services.AuthAPI",
             "type": "dotnet",
             "request": "launch",
             "projectPath": "${workspaceFolder}\\Mango.Services.AuthAPI\\Mango.Services.AuthAPI.csproj"
+        },
+        {
+            "name": "C#: Mango.Services.CouponAPI",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\Mango.Services.CouponAPI\\Mango.Services.CouponAPI.csproj"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Run All Mango Services",
+            "configurations": [
+                "C#: Mango Web",
+                "C#: Mango.Services.AuthAPI",
+                "C#: Mango.Services.CouponAPI"
+            ]
         }
     ]
 }
