@@ -15,10 +15,10 @@ namespace Mango.Web.Controllers
             _AuthService = authService;
             _responseDto = new ResponseDto();
         }
-
         [HttpGet]
         public async Task<IActionResult> Login()
         {
+
             LoginUserDto loginUserDto = new LoginUserDto();
 
             return View(loginUserDto);
@@ -27,6 +27,7 @@ namespace Mango.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(CreateUserDto createUserDto)
         {
+
             var responDto = await _AuthService.RegisterAsync(createUserDto);
 
             if (responDto.IsSuccess)
@@ -37,7 +38,6 @@ namespace Mango.Web.Controllers
             //return View(createUserDto);
             return View();
         }
-
         [HttpGet]
         public IActionResult Register()
         {
@@ -45,9 +45,7 @@ namespace Mango.Web.Controllers
 
             foreach (var Role in Constants.Constant.RoleName)
             {
-                RoleList.Add(
-                    new SelectListItem { Text = Role.Value.Name, Value = Role.Value.Name }
-                );
+                RoleList.Add(new SelectListItem { Text = Role.Value.Name, Value = Role.Value.Name });
             }
 
             ViewBag.RoleList = RoleList;
@@ -56,11 +54,13 @@ namespace Mango.Web.Controllers
             //return View(createUserDto);
             return View();
         }
-
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+
             return View();
         }
+
     }
 }
+
