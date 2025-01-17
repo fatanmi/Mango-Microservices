@@ -1,5 +1,10 @@
-﻿using Mango.Web.Implementation.IService;
+﻿using System.Net;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Mango.Web.Implementation.IService;
 using Mango.Web.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -116,6 +121,28 @@ namespace Mango.Web.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
+            return View();
+        }
+
+        public async Task<IActionResult> SignInAsync(LoginUserDto user) // Add this method
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var principal = new ClaimsPrincipal(
+                new ClaimsIdentity(
+                    new[] { new Claim(ClaimTypes.Name, user.Email) },
+                    CookieAuthenticationDefaults.AuthenticationScheme
+                )
+            );
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(
+                    new ClaimsIdentity(
+                        new[] { new Claim(ClaimTypes.Name, user.Email) },
+                        CookieAuthenticationDefaults.AuthenticationScheme
+                    )
+                ),
+                new AuthenticationProperties { IsPersistent = user.RememberMe }
+            );
             return View();
         }
     }
