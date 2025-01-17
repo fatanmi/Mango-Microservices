@@ -8,16 +8,25 @@ namespace Mango.Web.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _AuthService;
+        private readonly ITokenService _TokenService;
         private ResponseDto _responseDto;
+        private LoginResponseDto _LoginResponseDto;
+        private readonly ILogger<AuthController> _Logger;
 
-        public AuthController(IAuthService authService)
+        public AuthController(
+            IAuthService authService,
+            ITokenService TokenService,
+            ILogger<AuthController> Logger
+        )
         {
             _AuthService = authService;
             _responseDto = new ResponseDto();
+            _LoginResponseDto = new LoginResponseDto();
+            _TokenService = TokenService;
+            _Logger = Logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             LoginUserDto loginUserDto = new LoginUserDto();
 
@@ -25,13 +34,60 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _LoginResponseDto = await _AuthService.LoginAsync(loginUserDto);
+                    if (_LoginResponseDto.IsSuccess)
+                    {
+                        _TokenService.SetToken(_LoginResponseDto.Token.ToString()); // Set Token
+                        TempData["success"] = @"Welcome, " + loginUserDto.Email;
+                        return RedirectToAction("CouponIndex", "Coupon");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, _LoginResponseDto.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _Logger.LogError(ex, "An error occurred: {Message}", ex.Message);
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "An unexpected error occurred. Please try again later."
+                    );
+                }
+            }
+
+            // ViewBag.ErrorMessage = _LoginResponseDto?.Message;
+            return View(loginUserDto);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Register(CreateUserDto createUserDto)
         {
-            var responDto = await _AuthService.RegisterAsync(createUserDto);
-
-            if (responDto.IsSuccess)
+            try
             {
-                RedirectToAction(nameof(Login));
+                if (ModelState.IsValid)
+                {
+                    var responseDto = await _AuthService.RegisterAsync(createUserDto);
+
+                    if (responseDto.IsSuccess)
+                    {
+                        return RedirectToAction(nameof(Login));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", responseDto.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError(ex, "An error occurred: {Message}", ex.Message);
             }
 
             //return View(createUserDto);
@@ -58,7 +114,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             return View();
         }

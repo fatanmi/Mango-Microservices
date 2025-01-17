@@ -17,7 +17,15 @@ builder.Services.AddScoped<IBaseService, BaseService>();
 
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,7 +44,5 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+    name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

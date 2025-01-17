@@ -8,6 +8,7 @@ namespace Mango.Web.Controllers
     public class CouponController : Controller
     {
         private readonly ICouponService _couponService;
+
         public CouponController(ICouponService couponService)
         {
             _couponService = couponService;
@@ -17,10 +18,12 @@ namespace Mango.Web.Controllers
         {
             IEnumerable<CouponDto> list = null;
 
-            ResponseDto? response = await _couponService.GetAllCouponsAsync();
+            ResponseDto response = await _couponService.GetAllCouponsAsync();
             if (response != null && response.IsSuccess)
             {
-                list = JsonConvert.DeserializeObject<IEnumerable<CouponDto>>(Convert.ToString(response.Result));
+                list = JsonConvert.DeserializeObject<IEnumerable<CouponDto>>(
+                    Convert.ToString(response.Result)
+                );
             }
             else
             {
@@ -29,11 +32,10 @@ namespace Mango.Web.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> CouponCreate()
+        public IActionResult CouponCreate()
         {
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CouponCreate(CreateCouponDto createCouponDto)
@@ -46,7 +48,6 @@ namespace Mango.Web.Controllers
                 {
                     TempData["success"] = "Created";
                     return RedirectToAction(nameof(CouponIndex));
-
                 }
                 else
                 {
@@ -56,11 +57,10 @@ namespace Mango.Web.Controllers
             return View(createCouponDto);
         }
 
-
         public async Task<IActionResult> CouponDelete(int CouponID)
         {
             CouponDto model = new();
-            ResponseDto? response = await _couponService.GetCouponByIdAsync(CouponID);
+            ResponseDto response = await _couponService.GetCouponByIdAsync(CouponID);
             if (response != null && response.IsSuccess)
             {
                 model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
@@ -90,8 +90,7 @@ namespace Mango.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                ResponseDto? response = await _couponService.UpdateCouponAsync(createCouponDto);
+                ResponseDto response = await _couponService.UpdateCouponAsync(createCouponDto);
 
                 if (response != null && response.IsSuccess)
                 {

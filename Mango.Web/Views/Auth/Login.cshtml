@@ -8,25 +8,26 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary text-white text-center">
-                    <h2 class="fw-bold mb-0">Login</h2>
+                <div class="card-header bg-info  text-center">
+                    <h2 class="fw-bold mb-0 text-white">Login</h2>
                 </div>
                 <div class="card-body bg-light">
-                    <form asp-action="Login" method="post" novalidate>
+                    <form asp-action="Login" method="post">
                         <!-- Validation Summary -->
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <!-- Email -->
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label fw-bold text-dark">Email Address</label>
-                            <input asp-for="Email" class="form-control rounded-pill" placeholder="Enter your email address" />
+                            <label asp-for="Email" class="form-label fw-bold text-dark">Email</label>
+                            <input asp-for="Email" class="form-control rounded-pill" placeholder="Enter your email" />
                             <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
 
                         <!-- Password -->
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
-                            <input asp-for="Password" class="form-control rounded-pill" type="password" placeholder="Enter your password" />
+                            <input asp-for="Password" class="form-control rounded-pill" type="password"
+                                placeholder="Enter your password" />
                             <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
 
@@ -40,8 +41,8 @@
                         <!-- Register Link -->
                         <div class="text-center">
                             <small class="text-muted">
-                                Don't have an account?
-                                <a asp-controller="Auth" asp-action="Register" class="text-primary fw-bold">Register here</a>
+                                New here?
+                                <a asp-controller="Auth" asp-action="Register" class="text-info fw-bold">Sign up</a>
                             </small>
                         </div>
                     </form>

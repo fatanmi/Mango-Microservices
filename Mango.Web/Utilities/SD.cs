@@ -12,5 +12,6 @@
         {
             GET, POST, PUT, DELETE, TRACE,
         }
+        public const string TokenCookie = "JWTToken";
     }
 }
