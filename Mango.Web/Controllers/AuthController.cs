@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Mango.Web.Implementation.IService;
 using Mango.Web.Models;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol;
 
 namespace Mango.Web.Controllers
 {
@@ -48,7 +48,8 @@ namespace Mango.Web.Controllers
                     _LoginResponseDto = await _AuthService.LoginAsync(loginUserDto);
                     if (_LoginResponseDto.IsSuccess)
                     {
-                        _TokenService.SetToken(_LoginResponseDto.Token.ToString()); // Set Token
+                        _TokenService.SetToken(_LoginResponseDto.Token); // Set Token
+                        await SignInAsync(_LoginResponseDto);
                         TempData["success"] = @"Welcome, " + loginUserDto.Email;
                         return RedirectToAction("CouponIndex", "Coupon");
                     }
@@ -124,26 +125,23 @@ namespace Mango.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SignInAsync(LoginUserDto user) // Add this method
+        public async Task SignInAsync(LoginResponseDto user)
         {
             var handler = new JwtSecurityTokenHandler();
-            var principal = new ClaimsPrincipal(
-                new ClaimsIdentity(
-                    new[] { new Claim(ClaimTypes.Name, user.Email) },
-                    CookieAuthenticationDefaults.AuthenticationScheme
-                )
-            );
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(
-                    new ClaimsIdentity(
-                        new[] { new Claim(ClaimTypes.Name, user.Email) },
-                        CookieAuthenticationDefaults.AuthenticationScheme
-                    )
-                ),
-                new AuthenticationProperties { IsPersistent = user.RememberMe }
-            );
-            return View();
+            var jwt = new JwtSecurityToken(user.Token);
+
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name)?.Value));
+
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value));
+
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sid, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sid)?.Value));
+
+            identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value));
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
     }
 }

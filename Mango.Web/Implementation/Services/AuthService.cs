@@ -6,16 +6,18 @@ namespace Mango.Web.Implementation.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IBaseService _baseService;
+        private readonly IBaseService<LoginResponseDto> _baseServLoginResDto;
+        private readonly IBaseService<ResponseDto> _baseService;
 
-        public AuthService(IBaseService baseService)
+        public AuthService(IBaseService<LoginResponseDto> baseServLoginResDto, IBaseService<ResponseDto> baseService)
         {
+            _baseServLoginResDto = baseServLoginResDto;
             _baseService = baseService;
         }
 
         public Task<LoginResponseDto> LoginAsync(LoginUserDto loginDto)
         {
-            return _baseService.SignUserIn(
+            return _baseServLoginResDto.SendAsync(
                 new RequestDto()
                 {
                     ApiType = SD.ApiType.POST,

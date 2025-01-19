@@ -7,4 +7,8 @@
         public string Message { get; set; } = " ";
 
     }
+    public class LoginResponseDto : ResponseDto
+    {
+        public string Token { get; set; }
+    }
 }

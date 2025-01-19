@@ -19,6 +19,7 @@ namespace Mango.Services.AuthAPI.Controllers
         private readonly IMapper _Mapper;
         private readonly IAuthManager _AuthManager;
         private readonly ResponseDto _responseDto;
+        private readonly LoginResponseDto _LoginResponseDto;
 
         public AccountController(UserManager<ApiUser> userManager, AuthDBContext dbContext, ILogger<AccountController> logger, IMapper mapper, IAuthManager AuthManager)
         {
@@ -28,6 +29,7 @@ namespace Mango.Services.AuthAPI.Controllers
             _Mapper = mapper;
             _AuthManager = AuthManager;
             _responseDto = new ResponseDto();
+            _LoginResponseDto = new LoginResponseDto();
 
 
         }
@@ -62,30 +64,31 @@ namespace Mango.Services.AuthAPI.Controllers
         [HttpPost]
 
         [Route("login")]
-        public async Task<ResponseDto> Login([FromBody] LoginUserDto User)
+        public async Task<LoginResponseDto> Login([FromBody] LoginUserDto User)
         {
             if (!ModelState.IsValid)
             {
-                _responseDto.IsSuccess = false;
-                _responseDto.Message = ModelState.ToString();
-                return _responseDto;
+                _LoginResponseDto.IsSuccess = false;
+                _LoginResponseDto.Message = ModelState.ToString();
+                return _LoginResponseDto;
             }
             var isValidUser = await _AuthManager.ValidateUser(User);
             if (!await _AuthManager.ValidateUser(User))
             {
-                _responseDto.IsSuccess = false;
-                _responseDto.Message = "Incorrect Login details";
+                _LoginResponseDto.IsSuccess = false;
+                _LoginResponseDto.Message = "Incorrect Login details";
 
 
-                return _responseDto;
+                return _LoginResponseDto;
             }
             ApiUser UserDetails = await _UserManager.Users.FirstOrDefaultAsync(q => q.Email == User.Email);
 
             UserDto userDtos = _Mapper.Map<UserDto>(UserDetails);
             string Token = await _AuthManager.CreateToken();
-            _responseDto.Message = "Success";
-            _responseDto.Result = new { userDtos, Token };
-            return _responseDto;
+            _LoginResponseDto.Message = "Success";
+            _LoginResponseDto.Token = Token;
+            _LoginResponseDto.Result = new { userDtos };
+            return _LoginResponseDto;
         }
 
         [HttpPost]

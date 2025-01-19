@@ -2,9 +2,9 @@
 
 namespace Mango.Web.Implementation.IService
 {
-    public interface IBaseService
+    public interface IBaseService<T> where T : class
     {
-        Task<ResponseDto> SendAsync(RequestDto requestDto);
-        Task<LoginResponseDto> SignUserIn(RequestDto requestDto);
+        Task<T> SendAsync(RequestDto requestDto);
+        //Task<LoginResponseDto> SignUserIn(RequestDto requestDto);
     }
 }

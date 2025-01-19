@@ -6,9 +6,9 @@ namespace Mango.Web.Implementation.Services
 {
     public class CouponService : ICouponService
     {
-        private readonly IBaseService _baseService;
+        private readonly IBaseService<ResponseDto> _baseService;
 
-        public CouponService(IBaseService baseService)
+        public CouponService(IBaseService<ResponseDto> baseService)
         {
             _baseService = baseService;
         }
