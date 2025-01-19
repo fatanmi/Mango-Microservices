@@ -69,7 +69,7 @@ namespace Mango.Services.AuthAPI.Controllers
             if (!ModelState.IsValid)
             {
                 _LoginResponseDto.IsSuccess = false;
-                _LoginResponseDto.Message = ModelState.ToString();
+                _LoginResponseDto.Message = "Invalid input";
                 return _LoginResponseDto;
             }
             var isValidUser = await _AuthManager.ValidateUser(User);
@@ -85,7 +85,7 @@ namespace Mango.Services.AuthAPI.Controllers
 
             UserDto userDtos = _Mapper.Map<UserDto>(UserDetails);
             string Token = await _AuthManager.CreateToken();
-            _LoginResponseDto.Message = "Success";
+            _LoginResponseDto.Message = "Login Success";
             _LoginResponseDto.Token = Token;
             _LoginResponseDto.Result = new { userDtos };
             return _LoginResponseDto;
@@ -98,7 +98,7 @@ namespace Mango.Services.AuthAPI.Controllers
             if (!ModelState.IsValid)
             {
                 _responseDto.IsSuccess = false;
-                _responseDto.Message = ModelState.ToString();
+                _responseDto.Message = "Invalid role";
                 return _responseDto;
             }
             if (!await _AuthManager.AssignRole(Model.RoleName, Model.UserEmail))
@@ -140,7 +140,7 @@ namespace Mango.Services.AuthAPI.Controllers
             {
                 _responseDto.IsSuccess = false;
 
-                _responseDto.Result = ModelState;
+                _responseDto.Message = "Invalid Input";
                 return _responseDto;
             }
             try
@@ -151,7 +151,7 @@ namespace Mango.Services.AuthAPI.Controllers
                 if (!UserResult.Succeeded)
                 {
                     _responseDto.IsSuccess = false;
-                    _responseDto.Result = new { Errors = UserResult.Errors.Select(e => e.Description) };
+                    _responseDto.Message = UserResult.Errors.FirstOrDefault().Description;
                     return _responseDto;
                 }
 
@@ -159,7 +159,8 @@ namespace Mango.Services.AuthAPI.Controllers
                 if (!RoleResult.Succeeded)
                 {
                     _responseDto.IsSuccess = false;
-                    _responseDto.Result = new { Errors = RoleResult.Errors.Select(e => e.Description) };
+                    _responseDto.Message = RoleResult.Errors.FirstOrDefault().Description;
+                    await _UserManager.DeleteAsync(UserDetails);
                     return _responseDto;
                 }
 
@@ -188,7 +189,7 @@ namespace Mango.Services.AuthAPI.Controllers
                 if (!Result.Succeeded)
                 {
                     _responseDto.IsSuccess = false;
-                    _responseDto.Result = new { Errors = Result.Errors.Select(e => e.Description) };
+                    _responseDto.Message = Result.Errors.FirstOrDefault().Description;
                     return _responseDto;
                 }
                 _responseDto.Message = "Deleted!";

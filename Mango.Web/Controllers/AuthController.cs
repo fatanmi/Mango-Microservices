@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Protocol;
+using Mango.Web.Models.ViewModel;
 
 namespace Mango.Web.Controllers
 {
@@ -35,97 +35,104 @@ namespace Mango.Web.Controllers
         {
             LoginUserDto loginUserDto = new LoginUserDto();
 
-            return View(loginUserDto);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserDto loginUserDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                return View(ModelState);
+            }
+
+            try
+            {
+                _LoginResponseDto = await _AuthService.LoginAsync(loginUserDto);
+                if (_LoginResponseDto.IsSuccess)
                 {
-                    _LoginResponseDto = await _AuthService.LoginAsync(loginUserDto);
-                    if (_LoginResponseDto.IsSuccess)
-                    {
-                        _TokenService.SetToken(_LoginResponseDto.Token); // Set Token
-                        await SignInAsync(_LoginResponseDto);
-                        TempData["success"] = @"Welcome, " + loginUserDto.Email;
-                        return RedirectToAction("CouponIndex", "Coupon");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, _LoginResponseDto.Message);
-                    }
+                    _TokenService.SetToken(_LoginResponseDto.Token); // Set Token
+                    await AuthenticateUserWithIdentity(_LoginResponseDto);
+                    TempData["success"] = @"Welcome, " + loginUserDto.Email;
+                    return RedirectToAction("CouponIndex", "Coupon");
                 }
-                catch (Exception ex)
+                else
                 {
-                    _Logger.LogError(ex, "An error occurred: {Message}", ex.Message);
-                    ModelState.AddModelError(
-                        string.Empty,
-                        "An unexpected error occurred. Please try again later."
-                    );
+                    ModelState.AddModelError(string.Empty, _LoginResponseDto.Message);
+                    TempData["Error"] = _LoginResponseDto.Message;
                 }
             }
+            catch (Exception ex)
+            {
+                _Logger.LogError(ex, "An error occurred: {Message}", ex.Message);
+                ModelState.AddModelError(
+                    string.Empty,
+                    "An unexpected error occurred. Please try again later."
+                );
+            }
+
+
 
             // ViewBag.ErrorMessage = _LoginResponseDto?.Message;
             return View(loginUserDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(CreateUserDto createUserDto)
+        public async Task<IActionResult> Register(RegisterUserViewModel regView)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View(new RegisterUserViewModel());
+            }
+
+            CreateUserDto createUserDto = regView.User;
+
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var responseDto = await _AuthService.RegisterAsync(createUserDto);
+                var responseDto = await _AuthService.RegisterAsync(createUserDto);
 
-                    if (responseDto.IsSuccess)
-                    {
-                        return RedirectToAction(nameof(Login));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", responseDto.Message);
-                    }
+                if (responseDto.IsSuccess)
+                {
+                    TempData["success"] = "User created successfully";
+                    return RedirectToAction(nameof(Login));
                 }
+                else
+                {
+                    TempData["Error"] = responseDto.Message;
+                    ModelState.AddModelError("", responseDto.Message);
+                    return View(new RegisterUserViewModel() { User = createUserDto });
+                }
+
             }
             catch (Exception ex)
             {
                 _Logger.LogError(ex, "An error occurred: {Message}", ex.Message);
             }
 
-            //return View(createUserDto);
-            return View();
+            return View(new RegisterUserViewModel());
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            var RoleList = new List<SelectListItem>();
 
-            foreach (var Role in Constants.Constant.RoleName)
-            {
-                RoleList.Add(
-                    new SelectListItem { Text = Role.Value.Name, Value = Role.Value.Name }
-                );
-            }
 
-            ViewBag.RoleList = RoleList;
-            CreateUserDto createUserDto = new CreateUserDto();
+            RegisterUserViewModel registerUserViewModel = new RegisterUserViewModel();
 
             //return View(createUserDto);
-            return View();
+            return View(registerUserViewModel);
         }
 
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            _TokenService.RemoveToken();
+            return RedirectToAction("Index", "Home");
         }
 
-        public async Task SignInAsync(LoginResponseDto user)
+        public async Task AuthenticateUserWithIdentity(LoginResponseDto user)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwt = new JwtSecurityToken(user.Token);
@@ -138,6 +145,10 @@ namespace Mango.Web.Controllers
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sid, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sid)?.Value));
 
             identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value));
+
+            identity.AddClaims(jwt.Claims
+                .Where(x => x.Type.StartsWith("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"))
+                .Select(claim => new Claim(ClaimTypes.Role, claim.Value)));
 
             var principal = new ClaimsPrincipal(identity);
 
