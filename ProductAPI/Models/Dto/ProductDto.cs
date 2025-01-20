@@ -15,7 +15,7 @@ namespace ProductAPI.Models.Dto
 
         [DataType(DataType.ImageUrl)]
         public string ImageUrl { get; set; }
-        [DataType(DataType.Text)]
+        [DataType(DataType.Currency)]
         [Range(0.01, 1000)]
         public decimal Price { get; set; }
     }
