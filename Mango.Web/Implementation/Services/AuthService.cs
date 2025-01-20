@@ -36,7 +36,7 @@ namespace Mango.Web.Implementation.Services
                     Url = SD.AuthAPIBase + "/api/Account/register",
                     Data = createUserDto,
                 }
-            );
+          );
         }
 
         public async Task<ResponseDto> AssignRoleAsync(AssignRole assignRole)
@@ -47,7 +47,8 @@ namespace Mango.Web.Implementation.Services
                     ApiType = SD.ApiType.POST,
                     Url = SD.AuthAPIBase + "/api/Account/AssignRole",
                     Data = assignRole,
-                }
+                },
+                plusToken: true
             );
         }
 
@@ -58,7 +59,8 @@ namespace Mango.Web.Implementation.Services
                 {
                     ApiType = SD.ApiType.GET,
                     Url = SD.AuthAPIBase + "/api/Account/" + id,
-                }
+                },
+                plusToken: true
             );
         }
 
@@ -66,7 +68,8 @@ namespace Mango.Web.Implementation.Services
         {
             return await _baseService.SendAsync(
                 new RequestDto { ApiType = SD.ApiType.GET, Url = SD.AuthAPIBase + "/api/Account" }
-            );
+            ,
+             plusToken: true);
         }
 
         public async Task<ResponseDto> DeleteUserAsync(string id)
@@ -76,7 +79,8 @@ namespace Mango.Web.Implementation.Services
                 {
                     ApiType = SD.ApiType.DELETE,
                     Url = SD.AuthAPIBase + "/api/Account/" + id,
-                }
+                },
+                plusToken: true
             );
         }
     }

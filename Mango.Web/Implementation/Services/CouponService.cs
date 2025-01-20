@@ -46,7 +46,7 @@ namespace Mango.Web.Implementation.Services
                     ApiType = SD.ApiType.GET,
                     Url = SD.CouponAPIBase + "/api/coupon",
                     //AccessToken = "",
-                }
+                }, plusToken: true
             );
         }
 

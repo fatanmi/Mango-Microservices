@@ -9,14 +9,14 @@
                     <h2 class="fw-bold mb-2 text-white">Create Your Coupon</h2>
                 </div>
                 <div class="card-body bg-light">
-                    <form asp-controller="CouponController" asp-action="CouponCreate" method="post">
+                    <form asp-controller="Coupon" asp-action="CouponCreate" method="post">
                         <div class="row g-3 flex-column align-items-center mx-auto">
                             <!-- Coupon Code -->
                             <div class="col-8 mb-3 w-60">
                                 <label asp-for="CouponCode" class="form-label fw-bold text-dark">Coupon Code</label>
                                 <input asp-for="CouponCode" class="form-control border-0"
-                                    placeholder="Enter a unique code"
-                                    style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                       placeholder="Enter a unique code"
+                                       style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
                                 <span asp-validation-for="CouponCode" class="text-warning small"></span>
                             </div>
 
@@ -24,18 +24,20 @@
                             <div class="col-8 mb-3 w-60">
                                 <label asp-for="DiscountAmount" class="form-label fw-semibold">Discount Amount</label>
                                 <input asp-for="DiscountAmount" class="form-control border-0"
-                                    placeholder="Enter the discount value"
-                                    style="background-color: #E8F5FD;outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                       placeholder="Enter the discount value"
+                                       style="background-color: #E8F5FD;outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
                                 <span asp-validation-for="DiscountAmount" class="text-warning small"></span>
                             </div>
 
                             <!-- Minimum Amount -->
                             <div class="col-8 mb-3 w-60">
-                                <label asp-for="MinAmount" class="form-label fw-semibold">Minimum Purchase
-                                    Amount</label>
+                                <label asp-for="MinAmount" class="form-label fw-semibold">
+                                    Minimum Purchase
+                                    Amount
+                                </label>
                                 <input asp-for="MinAmount" class="form-control border-0"
-                                    placeholder="Set the minimum purchase"
-                                    style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                       placeholder="Set the minimum purchase"
+                                       style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
                                 <span asp-validation-for="MinAmount" class="text-warning small"></span>
                             </div>
 
@@ -43,13 +45,13 @@
                             <div class="row mt-5 align-items-center w-100">
                                 <div class="col-md-6 mb-3">
                                     <a asp-action="CouponIndex" class="btn btn-outline-light w-100 py-2"
-                                        style="border-radius: 50px;">
+                                       style="border-radius: 50px;">
                                         <i class="bi bi-arrow-left-circle-fill"></i> Back to List
                                     </a>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <button type="submit" class="btn btn-light text-primary w-100 py-2 fw-bold"
-                                        style="border-radius: 50px;">
+                                            style="border-radius: 50px;">
                                         <i class="bi bi-check-circle-fill"></i> Create Coupon
                                     </button>
                                 </div>

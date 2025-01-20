@@ -82,6 +82,7 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ResponseDto Post([FromBody] CreateCouponDto couponDto)
         {
 
@@ -104,6 +105,7 @@ namespace Mango.Services.CouponAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public ResponseDto Put([FromBody] CreateCouponDto couponDto)
         {
             try
@@ -124,6 +126,7 @@ namespace Mango.Services.CouponAPI.Controllers
 
         [HttpDelete]
         [Route("{Id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDto> Delete(int Id)
         {
             try

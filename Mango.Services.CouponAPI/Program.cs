@@ -2,7 +2,9 @@ using Mango.Services.CouponAPI.Data;
 using Mango.Services.CouponAPI.Implementation.Contract;
 using Mango.Services.CouponAPI.Implementation.Repository;
 using Mango.Services.CouponAPI.Properties.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +24,9 @@ builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();
 
 builder.Services.AddCors(options =>
 {
