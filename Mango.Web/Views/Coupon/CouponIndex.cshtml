@@ -36,24 +36,33 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (CouponDto coupon in Model)
+                @if (Model is null)
                 {
                     <tr>
-                        <td>
-                            @coupon.CouponCode
-                        </td>
-                        <td>
-                            @(coupon.DiscountAmount.ToString("c"))
-                        </td>
-                        <td>
-                            @(coupon.MinAmount.ToString("c"))
-                        </td>
-                        <td>
-                            <a asp-action="CouponDelete" asp-route-couponId=@coupon.CouponID class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
+                        <td colspan="4" class="text-danger text-center">No Coupons Found</td>
                     </tr>
+                }
+                else
+                {
+                    @foreach (CouponDto coupon in Model)
+                    {
+                        <tr>
+                            <td>
+                                @coupon.CouponCode
+                            </td>
+                            <td>
+                                @(coupon.DiscountAmount.ToString("c"))
+                            </td>
+                            <td>
+                                @(coupon.MinAmount.ToString("c"))
+                            </td>
+                            <td>
+                                <a asp-action="CouponDelete" asp-route-couponId=@coupon.CouponID class="btn btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

@@ -47,22 +47,20 @@ namespace Mango.Web.Implementation.Services
                 switch (apiResponse.StatusCode)
                 {
                     case HttpStatusCode.NotFound:
-                        return new { IsSuccess = false, Message = "Not Found" } as T;
                     case HttpStatusCode.Forbidden:
-                        return new { IsSuccess = false, Message = "Access Denied" } as T;
                     case HttpStatusCode.Unauthorized:
-                        return new { IsSuccess = false, Message = "Unauthorized" } as T;
                     case HttpStatusCode.InternalServerError:
-                        return new { IsSuccess = false, Message = "Internal Server Error" } as T;
+                        var errorResponse = new ResponseDto
+                        {
+                            IsSuccess = false,
+                            Message = apiResponse.StatusCode.ToString()
+                        };
+
+                        return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(errorResponse));
 
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-
-                        var apiResponseDto = JsonConvert.DeserializeObject<T>(
-                            apiContent
-                        );
-
-                        return apiResponseDto as T;
+                        return JsonConvert.DeserializeObject<T>(apiContent);
                 }
             }
             catch (Exception ex)

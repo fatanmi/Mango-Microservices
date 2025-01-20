@@ -17,17 +17,24 @@ namespace Mango.Web.Controllers
         public async Task<IActionResult> CouponIndex()
         {
             IEnumerable<CouponDto> list = null;
+            try
+            {
 
-            ResponseDto response = await _couponService.GetAllCouponsAsync();
-            if (response != null && response.IsSuccess)
-            {
-                list = JsonConvert.DeserializeObject<IEnumerable<CouponDto>>(
-                    Convert.ToString(response.Result)
-                );
+                ResponseDto response = await _couponService.GetAllCouponsAsync();
+                if (response != null && response.IsSuccess)
+                {
+                    list = JsonConvert.DeserializeObject<IEnumerable<CouponDto>>(
+                        Convert.ToString(response.Result)
+                    );
+                }
+                else
+                {
+                    TempData["error"] = response?.Message ?? "Not Authenticated";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                TempData["error"] = response.Message;
+                TempData["error"] = ex.Message;
             }
             return View(list);
         }

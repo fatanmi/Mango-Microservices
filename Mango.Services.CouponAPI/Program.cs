@@ -14,7 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 });
 
 builder.Services.AddScoped<ICouponUoW, CouponUoW>();
-//builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -33,6 +32,8 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader());
 });
 
+builder.Services.ConfigureAuth(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -45,6 +46,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
