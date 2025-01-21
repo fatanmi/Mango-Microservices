@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ProductAPI.Implementation.Contract;
-using ProductAPI.Models;
 using ProductAPI.Models.Dto;
 
 namespace ProductAPI.Controllers
@@ -57,7 +55,9 @@ namespace ProductAPI.Controllers
             }
             return _responseDto;
         }
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDto> CreateProduct([FromBody] ProductDto product)
         {
             try
@@ -84,11 +84,11 @@ namespace ProductAPI.Controllers
         }
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDto> UpdateProduct(int id)
         {
             try
             {
-
                 var product = await _productRepository.GetProduct(id);
                 if (product == null)
                 {
@@ -110,6 +110,7 @@ namespace ProductAPI.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDto> DeleteProduct(int id)
         {
             try

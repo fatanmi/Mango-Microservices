@@ -16,6 +16,7 @@ namespace ProductAPI.Models
         [Precision(18, 2)]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
+        public int Quantity { get; set; } = 0;
 
     }
 }

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ProductDto>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-12 text-center">
+            <h1>Products</h1>
+            @if (Model is null || !Model.Any())
+            {
+                <div class="text-danger text-center">No Product Found</div>
+            }
+            else
+            {
+                <div class="row">
+
+                    <div class="col-12 text-end">
+                        <a asp-action="ProductCreate" class="btn btn-outline-info bg-dark"><i class="bi bi-plus-square"></i> Create New Product</a>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (ProductDto product in Model)
+                    {
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="@product.ImageUrl" class="card-img-top" alt="Product Image">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="card-text">@TruncateString(product.Description, 30)</p>
+                                    <div class="card-footer">
+                                        <p class="card-text">Category: @product.Category</p>
+                                        <p class="card-text">Price: $@product.Price</p>
+                                        <p class="card-text">Quantity: $@product.Quantity</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@functions {
+    public string TruncateString(string value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value))
+            return value;
+
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
+    }
+}

@@ -2,7 +2,7 @@
 using ProductAPI.Models;
 using ProductAPI.Models.Dto;
 
-namespace ProductAPI.Properties
+namespace ProductAPI.Properties.Configuration
 {
     public class MappingConfig : Profile
 

@@ -1,0 +1,95 @@
+﻿@using Mango.Web.Models
+
+@model CreateProductDto
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="shadow-lg border-0">
+                <div class="text-white bg-info text-center py-2 px-2">
+                    <h2 class="fw-bold mb-2 text-white">Create Your Product</h2>
+                </div>
+                <div class="card-body bg-light">
+                    <form asp-controller="Product" asp-action="ProductCreate" method="post">
+                        <div class="row g-2 flex-column align-items-center mx-auto">
+                            <!-- product Name -->
+                            <div class="col-8 w-60">
+                                <label asp-for="Name" class="form-label fw-bold text-dark">Product Name</label>
+                                <input asp-for="Name" class="form-control border-0"
+                                       placeholder="Enter a product Name"
+                                       style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="Name" class="text-warning small"></span>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="col-8 w-60">
+                                <label asp-for="Category" class="form-label fw-semibold">Category</label>
+                                <input asp-for="Category" class="form-control border-0"
+                                       placeholder="Enter the Category of product"
+                                       style="background-color: #E8F5FD;outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="Category" class="text-warning small"></span>
+                            </div>
+                            <!-- Description -->
+                            <div class="col-8 w-60">
+                                <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                                <input asp-for="Description" class="form-control border-0"
+                                       placeholder="Enter the Description of product"
+                                       style="background-color: #E8F5FD;outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="Description" class="text-warning small"></span>
+                            </div>
+
+                            <!-- ImageUrl -->
+                            <div class="col-8 w-60">
+                                <label asp-for="ImageUrl" class="form-label fw-semibold">ImageUrl</label>
+                                <input asp-for="ImageUrl" class="form-control border-0"
+                                       placeholder="Enter Image url"
+                                       style="background-color: #E8F5FD;outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="ImageUrl" class="text-warning small"></span>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="col-8 mb-1 w-60">
+                                <label asp-for="Price" class="form-label fw-semibold">
+                                    Price
+                                </label>
+                                <input asp-for="Price" class="form-control border-0"
+                                       placeholder="Set the price of product"
+                                       style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="Price" class="text-warning small"></span>
+                            </div>
+                            <!--Quantity -->
+                            <div class="col-8 mb-1 w-60">
+                                <label asp-for="Quantity" class="form-label fw-semibold">
+                                    Quantity
+                                </label>
+                                <input asp-for="Quantity" class="form-control border-0"
+                                       placeholder="Set the quantity of product"
+                                       style="background-color: #E8F5FD; outline: none; box-shadow: 0 0 5px #fadfdf; border: 1px solid #fadfdf; outline: 1px solid #1DA1F2;" />
+                                <span asp-validation-for="Quantity" class="text-warning small"></span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="row mt-3 align-items-center w-100">
+                                <div class="col-md-6 mb-3">
+                                    <a asp-action="ProductIndex" class="btn btn-outline-light w-100 py-2"
+                                       style="border-radius: 50px;">
+                                        <i class="bi bi-arrow-left-circle-fill"></i> Back to List
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <button type="submit" class="btn btn-light text-primary w-100 py-2 fw-bold"
+                                            style="border-radius: 50px;">
+                                        <i class="bi bi-check-circle-fill"></i> Product Coupon
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
