@@ -42,6 +42,7 @@ namespace Mango.Web.Implementation.Services
 
         public async Task<ResponseDto> GetProducts()
         {
+
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = SD.ApiType.GET,
