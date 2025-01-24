@@ -37,6 +37,53 @@ namespace Mango.Web.Controllers
 
             return View(products);
         }
+        [HttpPost]
+        public async Task<IActionResult> ProductCreate(ProductDto product)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ResponseDto response = await _productService.CreateProduct(product);
+                    if (response != null && response.IsSuccess)
+                    {
+                        TempData["success"] = "Success!";
+                        return RedirectToAction(nameof(ProductIndex));
+                    }
+                    else
+                    {
+                        TempData["error"] = response?.Message ?? "Something went wrong";
+                    }
+                }
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return View(product);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            try
+            {
+                ResponseDto response = await _productService.DeleteProduct(productId);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Success!";
+                }
+                else
+                {
+                    TempData["error"] = response?.Message ?? "Something went wrong";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+            }
+            return RedirectToAction(nameof(ProductIndex));
+        }
         public async Task<IActionResult> ProductCreate()
         {
             return View();

@@ -109,13 +109,13 @@ namespace ProductAPI.Controllers
             return _responseDto;
         }
         [HttpDelete]
-        [Route("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ResponseDto> DeleteProduct(int id)
+        [Route("{ProductId}")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<ResponseDto> DeleteProduct(int ProductId)
         {
             try
             {
-                var product = await _productRepository.GetProduct(id);
+                var product = await _productRepository.GetProduct(ProductId);
                 if (product == null)
                 {
                     _responseDto.IsSuccess = false;
@@ -125,6 +125,7 @@ namespace ProductAPI.Controllers
                 bool isDeleted = await _productRepository.DeleteProduct(product);
 
                 _responseDto.Message = "Product deleted successfully";
+
             }
             catch (Exception ex)
             {

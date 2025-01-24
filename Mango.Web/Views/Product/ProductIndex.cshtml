@@ -23,17 +23,26 @@
                         <div class="col-md-4 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <img src="@product.ImageUrl" class="card-img-top" alt="Product Image">
+                                    <img src="@product.ImageUrl" class="card-img-top img object-fit-cover" alt="Product Image">
+                                    <div class="mt-2"></div>
                                     <h5 class="card-title">@product.Name</h5>
                                     <p class="card-text">@TruncateString(product.Description, 30)</p>
                                     <div class="card-footer">
                                         <p class="card-text">Category: @product.Category</p>
                                         <p class="card-text">Price: $@product.Price</p>
-                                        <p class="card-text">Quantity: $@product.Quantity</p>
+                                        <p class="card-text">Quantity: @product.Quantity</p>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a asp-action="ProductEdit" asp-route-productId="@product.ProductId" class="btn btn-outline-info">Edit</a>
+                                        <form asp-action="DeleteProduct" asp-route-productId="@product.ProductId">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     }
                 </div>
             }
